@@ -1,8 +1,8 @@
 class Api < ActiveRecord::Base
     #works with data selection - talking to the api
     #passes to game class
-    :has_many :games
-    :has_many :users, through: :games
+    has_many :games
+    has_many :users, through: :games
 
     # def category
     #     user_cat = gets.chomp
@@ -22,8 +22,13 @@ class Api < ActiveRecord::Base
     # end
 
     def establish_connection
+      #MAYBE
       questions_raw = RestClient.get("https://opentdb.com/api.php?amount=1&category=9")
       parsed_data = JSON.parse(questions_raw)['results']
+      questions = parsed_data.map do |row|
+        c = Category.new
+        c.question = row["question"]
+      end
     end
 
     def get_questions

@@ -1,8 +1,7 @@
-class CreateApis < ActiveRecord::Migration
+class CreateQuestions < ActiveRecord::Migration
   def change
-    create_table :apis do |t|
-      t.string :category
-      t.string :question
+    create_table :questions do |t|
+      t.integer :category_id
       t.string :difficulty
       t.string :correct_answer
       t.string :incorrect_answers

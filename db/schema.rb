@@ -10,19 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 3) do
+ActiveRecord::Schema.define(version: 5) do
 
-  create_table "apis", force: :cascade do |t|
-    t.string "category"
-    t.string "question"
-    t.string "difficulty"
-    t.string "correct_answer"
-    t.string "incorrect_answers"
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "game_categories", force: :cascade do |t|
+    t.integer "game_id"
+    t.integer "category_id"
   end
 
   create_table "games", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "api_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer "category_id"
+    t.string  "difficulty"
+    t.string  "correct_answer"
+    t.string  "incorrect_answers"
   end
 
   create_table "users", force: :cascade do |t|

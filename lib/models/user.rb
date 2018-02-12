@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   #has a name and a score
   #has many games
   #create the game
-  :has_many :games
-  
+  has_many :games
+
 
 end

@@ -5,7 +5,7 @@ class Game < ActiveRecord::Base
   #call on api
   #pass on user input
   #scores are kept for user
-  :belongs_to :user
-  :belongs_to :api
+  belongs_to :user
+  belongs_to :api
 
 end
