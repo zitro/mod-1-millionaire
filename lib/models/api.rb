@@ -1,9 +1,9 @@
 class Api
 
-
 def category
 	user_cat = gets.chomp
-	if user_cat == 1
+	if user_cat == ""
+		Sorry
 		9
 	elsif user_cat == 2
 		22
