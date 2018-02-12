@@ -1,7 +1,8 @@
 require 'bundler'
 
-require_relative "../models/game.rb"
-require_relative "../models/user.rb"
+# require_relative "../lib/models/game.rb"
+# require_relative "../lib/models/user.rb"
+# require_relative "../lib/models/api.rb"
 
 Bundler.require
 
