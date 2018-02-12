@@ -1,6 +1,7 @@
 class Api < ActiveRecord::Base
     #works with data selection - talking to the api
     #passes to game class
+    #class won't exist -- IGNORE
     has_many :games
     has_many :users, through: :games
 
