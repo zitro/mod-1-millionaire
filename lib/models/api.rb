@@ -23,7 +23,7 @@ class Api
     # end
 
     def establish_connection
-        questions_raw = RestClient.get("https://opentdb.com/api.php?amount=1&category=9")
+      questions_raw = RestClient.get("https://opentdb.com/api.php?amount=1&category=9")
       parsed_data = JSON.parse(questions_raw)['results']
     end
 
