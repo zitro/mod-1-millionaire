@@ -1,9 +1,8 @@
-class Api
+class Api < ActiveRecord::Base
     #works with data selection - talking to the api
     #passes to game class
-    #has many games
-    #has many users through games
-
+    :has_many :games
+    :has_many :users, through: :games
 
     # def category
     #     user_cat = gets.chomp
