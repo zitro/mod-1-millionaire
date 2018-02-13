@@ -1,6 +1,6 @@
 class Category < ActiveRecord::Base
 
-  def establish_connection
+  def self.establish_connection
     #MAYBE
     data_calls = []
       data_calls << RestClient.get("https://opentdb.com/api.php?amount=10&category=9&type=multiple")
@@ -17,11 +17,13 @@ class Category < ActiveRecord::Base
     end
   end
 
-  def self.save_categories_and_questions
-    parsed_data[0].map {|question|
-      Question.new(difficulty: question["difficulty"]
-        correct_answer: question["correct_answer"])}    
-
-  end
+  # def self.save_categories_and_questions
+  #   parsed_data = self.establish_connection
+  #   parsed_data[0].map {|question|
+  #     Question.new(difficulty: question["difficulty"]
+  #       correct_answer: question["correct_answer"])}
+  #     end
+  #
+  # end
 
 end
