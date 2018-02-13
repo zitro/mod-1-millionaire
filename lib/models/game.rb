@@ -1,14 +1,7 @@
 class Game < ActiveRecord::Base
-  #controller
-  #join table
-  #initiate the game
-  #call on api
-  #pass on user input
-  #scores are kept for user
   has_many :game_categories
   has_many :categories, through: :game_categories
   belongs_to :user
-
 
   def start_game
     welcome
@@ -18,8 +11,13 @@ class Game < ActiveRecord::Base
     randomize_questions
   end
 
+  def continue_game
+    show_categories
+    randomize_questions
+  end
+
   def sleeper
-    sleep(0)
+    sleep(1)
   end
 
 	def welcome
@@ -34,6 +32,7 @@ class Game < ActiveRecord::Base
 	 ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝       ╚═╝    ╚═════╝
 
 	".red
+  sleeper
 
 
 
@@ -64,7 +63,7 @@ class Game < ActiveRecord::Base
 
 
 	".green
-
+  sleeper
 
 	puts "
 	███╗   ███╗██╗██╗     ██╗     ██╗ ██████╗ ███╗   ██╗ █████╗ ██╗██████╗ ███████╗
@@ -75,9 +74,11 @@ class Game < ActiveRecord::Base
 	╚═╝     ╚═╝╚═╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝
 
 	 ".green
+    @playback = AudioPlayback.play("/Users/aralx73/Music/iTunes/iTunes Media/Music/a-ha/Hunting High And Low")
+    @playback.block
 
-	 puts "Please enter your name to get started".green
-	    sleeper
+	  puts "Please enter your name to get started".green
+	  sleeper
 	  end
 
   def find_or_create_username
@@ -106,10 +107,15 @@ class Game < ActiveRecord::Base
     # 1.answer 1 2. answer
   end
 
+  # def round_counter
+  #   round_counter = Integer
+  #   round_counter += 1
+  # end
+
   def show_categories
     puts "Please select a category"
-    sleeper
     counter = 0
+    sleeper
     Category.all.each do |category|
       counter +=1
       puts "#{counter}. #{category.name} "
@@ -140,7 +146,7 @@ class Game < ActiveRecord::Base
 
   def randomize_questions
     category = get_category
-    num = rand(1..10)
+    num = rand(1..50)
     counter = 0
 
     question = Question.where(category: category)[num]
@@ -168,25 +174,54 @@ class Game < ActiveRecord::Base
   end
 
   def valid_user_answer(answer, answers_array, question)
-     # checks if
-     # users_answer = answers_array[answer.to_i-1]
-     # users_answer == correct_answer
-    correct_answer = question.correct_answer
-    answers_array
-    answer.to_i
-    binding.pry
-    case answer
-    when "1"
-      puts ""
-    when "2"
-      puts "Here's a question from "
-    when "3"
-    when "4"
+    if answer == "1" || answer == "2" || answer == "3" || answer == "4"
+      correct?(answer, answers_array, question)
     else
       puts "Invalid entry. Please enter your choice again"
       get_user_answer
     end
   end
 
+  def correct?(answer, answers_array, question)
+    correct_answer = question.correct_answer
+    users_answer = answers_array[answer.to_i-1]
+    if users_answer == correct_answer
+      puts "Wow, you must be so smart."
+      check_difficulty(question)
+      puts "Your total score is #{user.score}"
+      proceed?
+    else
+      puts "Sorry dumbass. The correct answer was #{question.correct_answer}"
+      puts "Your total score is #{user.score}"
+      proceed?
+    end
+  end
+
+  def check_difficulty(question)
+    if question.difficulty == "easy"
+      user.update(score: (user.score + 100))
+    elsif question.difficulty == "medium"
+      user.update(score: (user.score + 200))
+    elsif question.difficulty == "hard"
+      user.update(score: (user.score + 300))
+    end
+  end
+
+  def proceed?
+    puts "Do you want to play another round?"
+    puts "Select y/n"
+    answer = gets.chomp
+    if answer == "y"
+      puts "Great! I'm so glad you're having fun." #[]comment
+      continue_game
+    elsif answer == "n"
+      puts "Thanks for playing. You got a final score of #{user.score}."
+      puts "You'll never be smarter than me."
+      exit
+    else
+      "Not a valid response... try again"
+      proceed?
+    end
+  end
 
 end

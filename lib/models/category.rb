@@ -3,7 +3,7 @@ class Category < ActiveRecord::Base
   has_many :game_categories
   has_many :games, through: :game_categories
 
-  URL = "https://opentdb.com/api.php?amount=10&category="
+  URL = "https://opentdb.com/api.php?amount=30&category="
 
   def self.establish_connection
     #MAYBE
@@ -15,12 +15,6 @@ class Category < ActiveRecord::Base
       data_calls << RestClient.get("#{URL}23&type=multiple")
       data_calls << RestClient.get("#{URL}21&type=multiple")
       parsed_data = data_calls.map {|data| JSON.parse(data)['results']}
-
-
-    # questions = parsed_data.map do |row|
-    #   c = Category.new
-    #   c.question = row["question"]
-    # end
   end
 
   def self.save_categories
