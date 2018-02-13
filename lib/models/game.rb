@@ -313,15 +313,15 @@ class Game < ActiveRecord::Base
 
 
   def positive_comments
-    positive = ["NERD!!!!", "I'm so impressed... yawn", "How the hell did you know that???", "Harvard grad, huh?", "THAT was impressive.", "Obviously.", "You can JOIN my TABLE anyday.", "You're really ARRAY of light.", "Another successful merge!"]
+    positive = ["NERD!!!!", "I'm so impressed... yawn", "How the hell did you know that???", "Harvard grad, huh?", "THAT was impressive.", "Obviously.", "You can JOIN my TABLE anyday.", "You're really ARRAY of light.", "Another successful merge!", "Life’s good, you should get one.", "Unless your name is Google stop acting like you know everything."]
   end
 
   def neutral_comments
-    neutral = ["You would pick that...", "Seriously?", "AAAAND HERE'S THE DAILY DOUBLE!!! Joking", "I don't know anything about this topic.", "I met someone at the supermarket. Almost as smart as you.", "Why am I still hosting this show?", "Hi everyone, I'm Alex Trebek!", "Did you hear about the pizza rat?"]
+    neutral = ["You would pick that...", "Seriously?", "AAAAND HERE'S THE DAILY DOUBLE!!! Joking", "I don't know anything about this topic.", "I met someone at the supermarket. Almost as smart as you.", "Why am I still hosting this show?", "This job sucks... Do you know if Google's hiring?", "Zombies eat brains. No worries, you’re safe.", "Hi everyone, I'm Alex Trebek!", "Did you hear about the pizza rat?"]
   end
 
   def negative_comments
-    negative = ["What have you been drinking?", "Did your grandma teach you that?", "I sure hope not!", "Obviously.", "Did you even read the documentation?", "I'll start another pot of coffee."]
+    negative = ["What have you been drinking?", "Did your grandma teach you that?", "I sure hope not!", "Obviously.", "Did you even read the documentation?", "I'll start another pot of coffee.", "It’s okay if you don’t like me. Not everyone has good taste.", "If had a dollar for every smart thing you say. I’ll be poor.", "Well at least your mom thinks you’re smart.", "Are you always so stupid or is today a special ocassion?", "Everyone has the right to be stupid, but you are abusing the privilege."]
   end
 
 
