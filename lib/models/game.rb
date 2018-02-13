@@ -7,8 +7,30 @@ class Game < ActiveRecord::Base
     welcome
     find_or_create_username
     how_to_play
-    show_categories
-    randomize_questions
+    start_or_score
+  end
+
+  def start_or_score
+    puts "Type 1 to see the scoreboard or any other key to start the game!".red
+    puts " "
+    answer = gets.chomp
+    if answer == "1"
+      puts " "
+      puts "Our top players are:".red
+      User.order(:score).reverse.first(5).each do |user|
+        puts " "
+        puts " #{user.name.capitalize}: #{user.score}".blue
+        puts " "
+      end
+      sleep(6)
+      system "clear"
+      puts " "
+      puts "Now for what you've all been waiting for. Here are the categories:".blue
+      puts " "
+      continue_game
+    else
+      continue_game
+    end
   end
 
   def continue_game
@@ -74,8 +96,7 @@ class Game < ActiveRecord::Base
 	╚═╝     ╚═╝╚═╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝
 
 	 ".green
-    @playback = AudioPlayback.play("/Users/aralx73/Music/iTunes/iTunes Media/Music/a-ha/Hunting High And Low")
-    @playback.block
+    sleeper
 
 	  puts "Please enter your name to get started".green
 	  sleeper
@@ -95,32 +116,32 @@ class Game < ActiveRecord::Base
   end
 
   def how_to_play
-    puts "Hey #{self.user.name.capitalize}! Ready to lose? Here's how to play: "
+    system("clear")
+    puts " "
+    puts "Hey #{self.user.name.capitalize}! Ready to lose? Here's how to play: ".blue
     sleeper
-    puts "You'll be given a question and four possible answers."
+    puts " "
+    puts "You'll be given a question and four possible answers.".blue
     sleeper
-    puts "Only one answer is correct!"
+    puts " "
+    puts "Only one answer is correct! Be sure to type the right key!".blue
     sleeper
-    puts "Type 1, 2, 3, or 4 with your answer"
+    puts " "
     sleeper
-    # question text
-    # 1.answer 1 2. answer
   end
 
-  # def round_counter
-  #   round_counter = Integer
-  #   round_counter += 1
-  # end
 
   def show_categories
-    puts "Please select a category"
+
     counter = 0
     sleeper
     Category.all.each do |category|
       counter +=1
-      puts "#{counter}. #{category.name} "
-      sleeper
+      puts "#{counter}. #{category.name} ".green
+      puts " "
     end
+    puts "Please select a category. Press 1, 2, 3, 4, or 5".blue
+    puts " "
   end
 
   def get_category
@@ -130,33 +151,43 @@ class Game < ActiveRecord::Base
   end
 
   def valid_answer(answer)
+    puts " "
     case answer
     when "1"
-      puts "Here's a question from General"
+      puts "General Knowledge: #{neutral_comments.sample}".red
     when "2"
-      puts "Here's a question from "
+      puts "Geography: #{neutral_comments.sample}".red
     when "3"
+      puts "Celebrities: #{neutral_comments.sample}".red
     when "4"
+      puts "History: #{neutral_comments.sample}".red
     when "5"
+      puts "Sports: #{neutral_comments.sample}".red
     else
-      puts "Invalid entry. Please enter your choice again"
+      puts "Invalid entry. Please enter your choice again".red
       get_category
     end
+    sleeper
+    puts " "
   end
 
   def randomize_questions
     category = get_category
-    num = rand(1..50)
+    num = rand(1..30)
     counter = 0
 
     question = Question.where(category: category)[num]
-    puts question.question
+    puts question.question.blue
+    puts ' '
+    puts " "
     sleeper
     answers_array = display_answers(question).map do |answer|
       counter +=1
-      puts "#{counter}. #{answer}"
+      puts "#{counter}. #{answer}".green
+      puts " "
       answer
     end
+    puts "Type 1, 2, 3, or 4 with your answer".blue
 
     sleeper
     get_user_answer(answers_array, question)
@@ -178,7 +209,7 @@ class Game < ActiveRecord::Base
       correct?(answer, answers_array, question)
     else
       puts "Invalid entry. Please enter your choice again"
-      get_user_answer
+      get_user_answer(answers_array, question)
     end
   end
 
@@ -186,13 +217,37 @@ class Game < ActiveRecord::Base
     correct_answer = question.correct_answer
     users_answer = answers_array[answer.to_i-1]
     if users_answer == correct_answer
-      puts "Wow, you must be so smart."
+      puts "Wow, you must be so smart. #{positive_comments.sample}".red
+      puts ' '
       check_difficulty(question)
-      puts "Your total score is #{user.score}"
+      puts "Your total score is #{user.score}".red
+      puts ' '
       proceed?
     else
-      puts "Sorry dumbass. The correct answer was #{question.correct_answer}"
-      puts "Your total score is #{user.score}"
+      system("clear")
+      puts "#{negative_comments.sample} Sorry dumbass.... but you're.....".red
+      sleeper
+      puts "...."
+      sleeper
+      puts "........"
+      sleeper
+      puts "
+      █     █░ ██▀███   ▒█████   ███▄    █   ▄████
+      ▓█░ █ ░█░▓██ ▒ ██▒▒██▒  ██▒ ██ ▀█   █  ██▒ ▀█▒
+      ▒█░ █ ░█ ▓██ ░▄█ ▒▒██░  ██▒▓██  ▀█ ██▒▒██░▄▄▄░
+      ░█░ █ ░█ ▒██▀▀█▄  ▒██   ██░▓██▒  ▐▌██▒░▓█  ██▓
+      ░░██▒██▓ ░██▓ ▒██▒░ ████▓▒░▒██░   ▓██░░▒▓███▀▒
+      ░ ▓░▒ ▒  ░ ▒▓ ░▒▓░░ ▒░▒░▒░ ░ ▒░   ▒ ▒  ░▒   ▒
+       ▒ ░ ░    ░▒ ░ ▒░  ░ ▒ ▒░ ░ ░░   ░ ▒░  ░   ░
+       ░   ░    ░░   ░ ░ ░ ░ ▒     ░   ░ ░ ░ ░   ░
+         ░       ░         ░ ░           ░       ░
+
+      ".red
+
+      puts "The correct answer was #{question.correct_answer}".red
+      puts ' '
+      puts "Your total score is #{user.score}".red
+      puts ' '
       proceed?
     end
   end
@@ -208,20 +263,66 @@ class Game < ActiveRecord::Base
   end
 
   def proceed?
-    puts "Do you want to play another round?"
-    puts "Select y/n"
+    puts "Do you want to play another round?".green
+    puts ' '
+    puts "Select y/n".green
     answer = gets.chomp
+    system "clear"
     if answer == "y"
-      puts "Great! I'm so glad you're having fun." #[]comment
+      puts "Great! I'm so glad you're having fun.".red
+      puts ' '
+      #[]comment
       continue_game
     elsif answer == "n"
-      puts "Thanks for playing. You got a final score of #{user.score}."
-      puts "You'll never be smarter than me."
+      system("clear")
+      puts " "
+      puts " "
+      puts "Quitting is losing. #{user.name.upcase}\'S A LOSER!!!!".red
+      puts "
+    ██╗   ██╗ ██████╗ ██╗   ██╗██████╗ ███████╗
+    ╚██╗ ██╔╝██╔═══██╗██║   ██║██╔══██╗██╔════╝
+     ╚████╔╝ ██║   ██║██║   ██║██████╔╝█████╗
+      ╚██╔╝  ██║   ██║██║   ██║██╔══██╗██╔══╝
+       ██║   ╚██████╔╝╚██████╔╝██║  ██║███████╗
+       ╚═╝    ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝
+
+                       █████╗
+                       ██╔══██╗
+                       ███████║
+                       ██╔══██║
+                       ██║  ██║
+                       ╚═╝  ╚═╝
+
+      ██╗      ██████╗ ███████╗███████╗██████╗
+      ██║     ██╔═══██╗██╔════╝██╔════╝██╔══██╗
+      ██║     ██║   ██║███████╗█████╗  ██████╔╝
+      ██║     ██║   ██║╚════██║██╔══╝  ██╔══██╗
+      ███████╗╚██████╔╝███████║███████╗██║  ██║
+      ╚══════╝ ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝".red
+
+      puts " "
+      puts "You got a final score of #{user.score}.".red
+      puts ' '
+      puts "You'll never be smarter than me.".red
       exit
     else
       "Not a valid response... try again"
       proceed?
     end
   end
+
+
+  def positive_comments
+    positive = ["NERD!!!!", "I'm so impressed... yawn", "How the hell did you know that???", "Harvard grad, huh?", "THAT was impressive.", "Obviously.", "You can JOIN my TABLE anyday.", "You're really ARRAY of light.", "Another successful merge!"]
+  end
+
+  def neutral_comments
+    neutral = ["You would pick that...", "Seriously?", "AAAAND HERE'S THE DAILY DOUBLE!!! Joking", "I don't know anything about this topic.", "I met someone at the supermarket. Almost as smart as you.", "Why am I still hosting this show?", "Hi everyone, I'm Alex Trebek!", "Did you hear about the pizza rat?"]
+  end
+
+  def negative_comments
+    negative = ["What have you been drinking?", "Did your grandma teach you that?", "I sure hope not!", "Obviously.", "Did you even read the documentation?", "I'll start another pot of coffee."]
+  end
+
 
 end
