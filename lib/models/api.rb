@@ -24,13 +24,22 @@ class Api < ActiveRecord::Base
 
     def establish_connection
       #MAYBE
-      questions_raw = RestClient.get("https://opentdb.com/api.php?amount=1&category=9")
+				general_raw = RestClient.get("https://opentdb.com/api.php?amount=10&category=9&type=multiple")
+				geography_raw = RestClient.get("https://opentdb.com/api.php?amount=10&category=22&type=multiple")
+				celebrities_raw = RestClient.get("https://opentdb.com/api.php?amount=10&category=26&type=multiple")
+				history_raw = RestClient.get("https://opentdb.com/api.php?amount=10&category=23&type=multiple")
+				sports_raw = RestClient.get("https://opentdb.com/api.php?amount=10&category=21&type=multiple")
+
       parsed_data = JSON.parse(questions_raw)['results']
       questions = parsed_data.map do |row|
         c = Category.new
         c.question = row["question"]
       end
     end
+
+
+
+
 
     def get_questions
         question = establish_connection[0]["question"]
