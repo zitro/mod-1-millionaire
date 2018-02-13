@@ -4,6 +4,6 @@ require 'rest-client'
 require 'json'
 
 
-api = Api.new
+general = Category.new(name: "General")
 
 binding.pry
