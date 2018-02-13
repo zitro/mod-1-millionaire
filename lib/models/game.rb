@@ -89,19 +89,50 @@ class Game < ActiveRecord::Base
     category = get_category
     num = rand(1..10)
     counter = 0
+
     question = Question.where(category: category)[num]
     puts question.question
     sleeper
-    display_answers(question).each do |answer|
+    answers_array = display_answers(question).map do |answer|
       counter +=1
       puts "#{counter}. #{answer}"
+      answer
     end
+
     sleeper
+    get_user_answer(answers_array, question)
   end
 
   def display_answers(question)
     answers_array = [question.correct_answer, question.incorrect_answer1, question.incorrect_answer2, question.incorrect_answer3]
     answers_array.shuffle
+  end
+
+  def get_user_answer(answers_array, question)
+    answer = gets.chomp
+    valid_user_answer(answer, answers_array, question)
+    answer
+  end
+
+  def valid_user_answer(answer, answers_array, question)
+     # checks if
+     # users_answer = answers_array[answer.to_i-1]
+     # users_answer == correct_answer
+    correct_answer = question.correct_answer
+    answers_array
+    answer.to_i
+    binding.pry
+    case answer
+    when "1"
+      puts ""
+    when "2"
+      puts "Here's a question from "
+    when "3"
+    when "4"
+    else
+      puts "Invalid entry. Please enter your choice again"
+      get_user_answer
+    end
   end
 
 
