@@ -114,7 +114,7 @@ class Game < ActiveRecord::Base
     sleeper
     say_welcome
     host
-	  puts "Please enter your name to get started".black.bold.blink
+	  puts "Please enter your name to get started".bold.blink
 		say_enter_name
 	  sleeper
 	  end
@@ -149,7 +149,7 @@ class Game < ActiveRecord::Base
 
   def count_rounds
     self.update(round_counter: (self.round_counter + 1))
-    puts "Welcome to Round #{self.round_counter}!".black.bold.underline
+    puts "Welcome to Round #{self.round_counter}!".bold.underline
     puts " "
     sleeper
   end
