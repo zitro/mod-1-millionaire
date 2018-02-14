@@ -210,7 +210,8 @@ class Game < ActiveRecord::Base
       answer
     end
     puts "Type 1, 2, 3, or 4 with your answer".blue
-
+		puts ''
+		puts ''
     sleeper
     get_user_answer(answers_array, question)
   end
