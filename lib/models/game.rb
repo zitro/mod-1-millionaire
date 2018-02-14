@@ -332,6 +332,7 @@ class Game < ActiveRecord::Base
       puts ' '
       puts "You'll never be smarter than me.".red
       exit
+      return " "
     else
       "Not a valid response... try again"
       proceed?
