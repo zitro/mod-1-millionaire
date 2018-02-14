@@ -261,7 +261,7 @@ class Game < ActiveRecord::Base
       puts "........"
       sleeper
 
-      text_flasher("
+      puts "
 
 
 			 ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄▄
@@ -279,7 +279,7 @@ class Game < ActiveRecord::Base
 
 
 
-			")
+			".blink
 
       puts "The correct answer was #{question.correct_answer}".red
       puts ' '
@@ -365,8 +365,8 @@ class Game < ActiveRecord::Base
     negative = ["What have you been drinking?", "Did your grandma teach you that?", "I sure hope not!", "Obviously.", "Did you even read the documentation?", "I'll start another pot of coffee.", "It’s okay if you don’t like me. Not everyone has good taste.", "If had a dollar for every smart thing you say. I’ll be poor.", "Well at least your mom thinks you’re smart.", "Are you always so stupid or is today a special ocassion?", "Everyone has the right to be stupid, but you are abusing the privilege."]
   end
 
-  def text_flasher(text)
-      puts "\e[5m#{text}\e[0m"
-  end
+  # def text_flasher(text)
+  #     puts "\e[5m#{text}\e[0m"
+  # end
 
 end
