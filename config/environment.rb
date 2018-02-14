@@ -1,5 +1,6 @@
 require 'bundler'
 require 'io/console'
+require 'timeout'
 
 
 Bundler.require

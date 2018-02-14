@@ -4,10 +4,19 @@ class Game < ActiveRecord::Base
   belongs_to :user
 
   def start_game
+    pid = fork{ exec 'afplay', "media/01 Take On Me.mp3"}
     welcome
     find_or_create_username
     how_to_play
     start_or_score
+  end
+
+  def say_welcome
+    system "say welcome to mod one millionaire"
+  end
+
+  def host
+    system "say I am your host alex truh beck"
   end
 
   def start_or_score
@@ -98,7 +107,8 @@ class Game < ActiveRecord::Base
 
 	 ".green
     sleeper
-
+    say_welcome
+    host
 	  text_flasher("Please enter your name to get started")
 	  sleeper
 	  end
@@ -125,6 +135,8 @@ class Game < ActiveRecord::Base
     puts "You'll be given a question and four possible answers.".blue
     sleeper
     puts " "
+    puts "You'll have 5 seconds to pick the correct answer"
+    puts " "
     puts "Only one answer is correct! Be sure to type the right key!".blue
     sleeper
     puts " "
@@ -133,7 +145,8 @@ class Game < ActiveRecord::Base
 
 
   def show_categories
-
+    # pid = fork{ exec 'killall', "afplay" }
+    # pid2 = fork{ exec 'afplay', "media/Jeopardy-theme-song.mp3"}
     counter = 0
     sleeper
     Category.all.each do |category|
@@ -200,9 +213,13 @@ class Game < ActiveRecord::Base
   end
 
   def get_user_answer(answers_array, question)
+    # if Timeout::timeout(5){
     answer = STDIN.getch
     valid_user_answer(answer, answers_array, question)
     answer
+  # }
+      # valid_user_answer((1..4).to_a.sample, answers_array, question)
+    # end
   end
 
   def valid_user_answer(answer, answers_array, question)
@@ -215,6 +232,7 @@ class Game < ActiveRecord::Base
   end
 
   def correct?(answer, answers_array, question)
+
     correct_answer = question.correct_answer
     users_answer = answers_array[answer.to_i-1]
     if users_answer == correct_answer
@@ -226,6 +244,7 @@ class Game < ActiveRecord::Base
       proceed?
     else
       system("clear")
+      pid2 = fork{ exec 'afplay', "media/fail.mp3"}
       puts "#{negative_comments.sample} Sorry dumbass.... but you're.....".red
       sleeper
       puts "...."
@@ -283,6 +302,7 @@ class Game < ActiveRecord::Base
       #[]comment
       continue_game
     elsif answer == "n"
+      pid = fork{ exec 'killall', "afplay" }
       system("clear")
       puts " "
       puts " "

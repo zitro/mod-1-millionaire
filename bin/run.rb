@@ -3,6 +3,8 @@ require "pry"
 require 'rest-client'
 require 'json'
 
+# system `say -v Fred hello`
+
 Question.delete_all
 Category.save_questions
 
