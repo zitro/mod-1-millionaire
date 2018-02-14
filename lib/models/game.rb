@@ -47,6 +47,7 @@ class Game < ActiveRecord::Base
   end
 
   def continue_game
+    count_rounds
     show_categories
     randomize_questions
   end
@@ -146,11 +147,14 @@ class Game < ActiveRecord::Base
     sleeper
   end
 
+  def count_rounds
+    self.update(round_counter: (self.round_counter + 1))
+    puts "Welcome to Round #{self.round_counter}".yellow
+    puts " "
+    sleeper
+  end
 
   def show_categories
-    self.update(round_counter: (game.round_counter + 1))
-    # pid = fork{ exec 'killall', "afplay" }
-    # pid2 = fork{ exec 'afplay', "media/Jeopardy-theme-song.mp3"}
     counter = 0
     sleeper
     Category.all.each do |category|
@@ -301,9 +305,11 @@ class Game < ActiveRecord::Base
     answer = STDIN.getch
     system "clear"
     if answer == "y"
+
       puts "Great! I'm so glad you're having fun.".red
       puts ' '
-      #[]comment
+      puts "In this session, you've played #{self.round_counter} rounds and have a total score of #{user.score}. I'm so proud of you."
+      puts " "
       continue_game
     elsif answer == "n"
       pid = fork{ exec 'killall', "afplay" }
