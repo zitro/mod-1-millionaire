@@ -1,6 +1,6 @@
 # Mod1 Millionaire
 
-Mod1 Millionaire brings the world trivia straight to your terminal. Built in Ruby, Mod1 Millionaire  you're able to Search by topic, user, author names and more.
+Mod1 Millionaire brings the world trivia straight to your terminal. Built in Ruby, Mod1 Millionaire is able to search by topic, user, author names and more.
 
 ## Getting Started
 
@@ -10,10 +10,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 
 The Ruby Gems
-gem "sinatra-activerecord"
-gem "sqlite3"
-gem "pry"
-gem "require_all"
+gem 'sinatra-activerecord'
+gem 'sqlite3'
+gem 'pry'
+gem 'require_all'
 gem 'rest-client'
 gem 'json'
 gem 'colorize'

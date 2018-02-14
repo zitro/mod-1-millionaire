@@ -30,21 +30,39 @@ class Category < ActiveRecord::Base
     # binding.pry
     #loop and increment the
     counter = 0
+    table = {"&shy;" => "-",
+      "&quot;" => "\"",
+      "&#039;" => "\'",
+      "&uuml;" => "u",
+      "&ldquo;" => "\"",
+      "&rdquo;" => "\"",
+      "&rsquo;" => "'",
+      "&hellip;" => "...",
+      "&amp;" => "&",
+      "&iacute;" => "i",
+      "&oacute;" => "o",
+      "&aacute;" => "a",
+      "&deg;" => " degree(s)",
+      "&prime;" => "\'",
+      "&Prime;" => "\""}
+    re = Regexp.new(table.keys.map {|x| Regexp.escape(x) }.join("|"))
     parsed_data.each do |category_array|
       counter += 1
       category_array.map do |question|
       # binding.pry
 
-      question = Question.new(question: question["question"],
+      question = Question.new(question: question["question"].gsub(re , table),
         category_id: counter,
         difficulty: question["difficulty"],
-        correct_answer: question["correct_answer"],
-        incorrect_answer1: question["incorrect_answers"][0],
-        incorrect_answer2: question["incorrect_answers"][1],
-        incorrect_answer3: question["incorrect_answers"][2]
+        correct_answer: question["correct_answer"].gsub(re , table),
+        incorrect_answer1: question["incorrect_answers"][0].gsub(re , table),
+        incorrect_answer2: question["incorrect_answers"][1].gsub(re , table),
+        incorrect_answer3: question["incorrect_answers"][2].gsub(re , table)
       )
+      # question.question.gsub!(re , table)
       question.save
       end
+
     end
   end
 

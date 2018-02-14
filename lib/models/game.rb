@@ -13,7 +13,7 @@ class Game < ActiveRecord::Base
   def start_or_score
     puts "Type 1 to see the scoreboard or any other key to start the game!".red
     puts " "
-    answer = gets.chomp
+    answer = STDIN.getch
     if answer == "1"
       puts " "
       puts "Our top players are:".red
@@ -145,7 +145,7 @@ class Game < ActiveRecord::Base
   end
 
   def get_category
-    answer = gets.chomp
+    answer = STDIN.getch
     valid_answer(answer)
     answer
   end
@@ -199,7 +199,7 @@ class Game < ActiveRecord::Base
   end
 
   def get_user_answer(answers_array, question)
-    answer = gets.chomp
+    answer = STDIN.getch
     valid_user_answer(answer, answers_array, question)
     answer
   end
@@ -266,7 +266,7 @@ class Game < ActiveRecord::Base
     puts "Do you want to play another round?".green
     puts ' '
     puts "Select y/n".green
-    answer = gets.chomp
+    answer = STDIN.getch
     system "clear"
     if answer == "y"
       puts "Great! I'm so glad you're having fun.".red

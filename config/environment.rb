@@ -1,4 +1,5 @@
 require 'bundler'
+require 'io/console'
 
 
 Bundler.require
