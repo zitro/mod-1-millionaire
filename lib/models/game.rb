@@ -19,6 +19,10 @@ class Game < ActiveRecord::Base
     system "say I am your host alex truh beck"
   end
 
+	def say_enter_name
+    system "say please enter your name"
+  end
+
   def start_or_score
     puts "Type 1 to see the scoreboard or any other key to start the game!".red
     puts " "
@@ -110,6 +114,7 @@ class Game < ActiveRecord::Base
     say_welcome
     host
 	  text_flasher("Please enter your name to get started")
+		say_enter_name
 	  sleeper
 	  end
 
@@ -345,7 +350,7 @@ class Game < ActiveRecord::Base
   end
 
   def neutral_comments
-    neutral = ["You would pick that...", "Seriously?", "AAAAND HERE'S THE DAILY DOUBLE!!! Joking", "I don't know anything about this topic.", "I met someone at the supermarket. Almost as smart as you.", "Why am I still hosting this show?", "This job sucks... Do you know if Google's hiring?", "Zombies eat brains. No worries, you’re safe.", "Hi everyone, I'm Alex Trebek!", "Did you hear about the pizza rat?"]
+    neutral = ["You would pick that...", "Seriously?", "AAAAND HERE'S THE DAILY DOUBLE!!! Joking", "So yeah you must not have many friends, hu?" "I don't know anything about this topic.", "I met someone at the supermarket. Almost as smart as you.", "Why am I still hosting this show?", "This job sucks... Do you know if Google's hiring?", "Zombies eat brains. No worries, you’re safe.", "Did you hear about the pizza rat?"]
   end
 
   def negative_comments
