@@ -44,7 +44,10 @@ class Category < ActiveRecord::Base
       "&aacute;" => "a",
       "&deg;" => " degree(s)",
       "&prime;" => "\'",
-      "&Prime;" => "\""}
+      "&Prime;" => "\"",
+			"&auml;" => "a",
+			"&ouml;" => "o",
+			"&aring;" => "a"}
     re = Regexp.new(table.keys.map {|x| Regexp.escape(x) }.join("|"))
     parsed_data.each do |category_array|
       counter += 1

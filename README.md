@@ -35,10 +35,7 @@ Step 2. Clone repository to your computer
 Step 3. ::run (bundle install) from the terminal
 
 ```
-Step 4. ::run (bundle install) from the terminal to pull a new data set
-
-```
-Step 5. ::run (ruby ./bin/run.rb) from the terminal to start application
+Step 4. ::run (ruby bin/run.rb) from the terminal to start application
 
 ```
 
