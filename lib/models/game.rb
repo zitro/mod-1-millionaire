@@ -157,7 +157,7 @@ class Game < ActiveRecord::Base
   def show_categories
     counter = 0
     sleeper
-    Category.all.each do |category|
+    Category.first(5).each do |category|
       counter +=1
       puts "#{counter}. #{category.name} ".green
       puts " "
@@ -210,7 +210,6 @@ class Game < ActiveRecord::Base
       answer
     end
     puts "Type 1, 2, 3, or 4 with your answer".yellow
-
     sleeper
     get_user_answer(answers_array, question)
   end
@@ -221,13 +220,9 @@ class Game < ActiveRecord::Base
   end
 
   def get_user_answer(answers_array, question)
-    # if Timeout::timeout(5){
     answer = STDIN.getch
     valid_user_answer(answer, answers_array, question)
     answer
-  # }
-      # valid_user_answer((1..4).to_a.sample, answers_array, question)
-    # end
   end
 
   def valid_user_answer(answer, answers_array, question)
@@ -240,7 +235,6 @@ class Game < ActiveRecord::Base
   end
 
   def correct?(answer, answers_array, question)
-
     correct_answer = question.correct_answer
     users_answer = answers_array[answer.to_i-1]
     if users_answer == correct_answer
@@ -250,7 +244,7 @@ class Game < ActiveRecord::Base
       check_difficulty(question)
       puts "Your total score is #{user.score}".red
       puts ' '
-      proceed?
+      check_for_dj
     else
       system("clear")
       pid2 = fork{ exec 'afplay', "media/fail.mp3"}
@@ -260,7 +254,6 @@ class Game < ActiveRecord::Base
       sleeper
       puts "........"
       sleeper
-
       puts "
 
 
@@ -285,7 +278,7 @@ class Game < ActiveRecord::Base
       puts ' '
       puts "Your total score is #{user.score}".red
       puts ' '
-      proceed?
+      check_for_dj
     end
   end
 
@@ -296,6 +289,131 @@ class Game < ActiveRecord::Base
       user.update(score: (user.score + 200))
     elsif question.difficulty == "hard"
       user.update(score: (user.score + 300))
+    end
+  end
+
+  def check_for_dj
+    if user.score == 0
+      proceed?
+    elsif self.round_counter % 3 == 0
+      launch_double_jeopardy
+    else
+      proceed?
+    end
+  end
+
+  def launch_double_jeopardy
+    puts "You've made it to Double Jeopardy!"
+    puts " "
+    puts "You currently have #{user.score} points!"
+    puts " "
+    puts "Few make it this far... I never thought you'd be one! #{neutral_comments.sample}"
+    puts " "
+    sleeper
+    puts "You can bet it all -- or nothing if you're lame."
+    puts " "
+    puts "How many points would you like to wager?"
+    puts " "
+    get_dj_answer
+  end
+
+  def get_dj_answer
+    answer = gets.chomp
+    validate_dj_answer(answer)
+  end
+
+  def validate_dj_answer(answer)
+    # 2000
+      if answer.to_i > 0 && answer.to_i <= user.score
+        user.update(bet: answer.to_i)
+        puts "Thanks for betting #{answer}. You should've bet ZERO!"
+        double_jeopardy_question_randomizer
+      else
+        puts "Sorry you can't bet #{answer}!"
+      end
+  end
+
+  def double_jeopardy_question_randomizer
+      num = rand(1..30)
+      counter = 0
+
+      question = Question.where(category: 6)[num]
+      puts question.question.yellow
+      puts ' '
+      puts " "
+      sleeper
+      answers_array = display_answers(question).map do |answer|
+        counter +=1
+        puts "#{counter}. #{answer}".green
+        puts " "
+        answer
+      end
+      puts "Type 1, 2, 3, or 4 with your answer".yellow
+      sleeper
+      dj_get_user_answer(answers_array, question)
+  end
+
+  def dj_get_user_answer(answers_array, question)
+    answer = STDIN.getch
+    dj_valid_user_answer(answer, answers_array, question)
+    answer
+  end
+
+  def dj_valid_user_answer(answer, answers_array, question)
+    if answer == "1" || answer == "2" || answer == "3" || answer == "4"
+      dj_correct?(answer, answers_array, question)
+    else
+      puts "Invalid entry. Please enter your choice again"
+      get_user_answer(answers_array, question)
+    end
+  end
+
+  def dj_correct?(answer, answers_array, question)
+    correct_answer = question.correct_answer
+    users_answer = answers_array[answer.to_i-1]
+    if users_answer == correct_answer
+      user.update(score: (user.score + user.bet))
+      puts "Wow, you must be so smart. #{positive_comments.sample}".red
+			puts "You we're right! The correct answer was #{question.correct_answer}.".red
+      puts ' '
+      puts "Your total score is #{user.score}".red
+      puts ' '
+      continue_game
+    else
+      system("clear")
+      pid2 = fork{ exec 'afplay', "media/fail.mp3"}
+      user.update(score: (user.score - user.bet))
+      puts "#{negative_comments.sample} Sorry dumbass.... but you're.....".red
+      sleeper
+      puts "...."
+      sleeper
+      puts "........"
+      sleeper
+      puts "
+
+
+			 ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄▄
+			▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌      ▐░▌▐░░░░░░░░░░░▌
+			▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌░▌     ▐░▌▐░█▀▀▀▀▀▀▀▀▀
+			▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌▐░▌    ▐░▌▐░▌
+			▐░▌   ▄   ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░▌ ▐░▌   ▐░▌▐░▌ ▄▄▄▄▄▄▄▄
+			▐░▌  ▐░▌  ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌  ▐░▌  ▐░▌▐░▌▐░░░░░░░░▌
+			▐░▌ ▐░▌░▌ ▐░▌▐░█▀▀▀▀█░█▀▀ ▐░▌       ▐░▌▐░▌   ▐░▌ ▐░▌▐░▌ ▀▀▀▀▀▀█░▌
+			▐░▌▐░▌ ▐░▌▐░▌▐░▌     ▐░▌  ▐░▌       ▐░▌▐░▌    ▐░▌▐░▌▐░▌       ▐░▌
+			▐░▌░▌   ▐░▐░▌▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄█░▌▐░▌     ▐░▐░▌▐░█▄▄▄▄▄▄▄█░▌
+			▐░░▌     ▐░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌      ▐░░▌▐░░░░░░░░░░░▌
+			 ▀▀       ▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀        ▀▀  ▀▀▀▀▀▀▀▀▀▀▀
+
+
+
+
+			".blink
+
+      puts "The correct answer was #{question.correct_answer}".red
+      puts ' '
+      puts "Your total score is #{user.score}".red
+      puts ' '
+      continue_game
     end
   end
 
@@ -358,7 +476,7 @@ class Game < ActiveRecord::Base
   end
 
   def neutral_comments
-    neutral = ["You would pick that...", "Seriously?", "AAAAND HERE'S THE DAILY DOUBLE!!! Joking", "So yeah you must not have many friends, hu?" "I don't know anything about this topic.", "I met someone at the supermarket. Almost as smart as you.", "Why am I still hosting this show?", "This job sucks... Do you know if Google's hiring?", "Zombies eat brains. No worries, you’re safe.", "Did you hear about the pizza rat?"]
+    neutral = ["You would pick that...", "Seriously?", "AAAAND HERE'S THE DAILY DOUBLE!!! Joking", "So yeah you must not have many friends, huh? " "I don't know anything about this topic.", "I met someone at the supermarket. Almost as smart as you.", "Why am I still hosting this show?", "This job sucks... Do you know if Google's hiring?", "Zombies eat brains. No worries, you’re safe.", "Did you hear about the pizza rat?"]
   end
 
   def negative_comments
