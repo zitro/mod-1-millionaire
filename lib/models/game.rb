@@ -304,6 +304,7 @@ class Game < ActiveRecord::Base
   end
 
   def launch_double_jeopardy
+<<<<<<< HEAD
 		puts "
 
 
@@ -347,15 +348,20 @@ class Game < ActiveRecord::Base
 
 		puts " "
 		puts "You've made it to Double Jeopardy!"
+=======
+    system "clear"
+    
+    puts "You've made it to Double Jeopardy!".blue
+>>>>>>> 2f7623a419486b6aafca8d410e46391d47aa6b0b
     puts " "
-    puts "You currently have #{user.score} points!"
+    puts "You currently have #{user.score} points!".blue
     puts " "
-    puts "Few make it this far... I never thought you'd be one! #{neutral_comments.sample}"
+    puts "Few make it this far... I never thought you'd be one! #{neutral_comments.sample}".blue
     puts " "
     sleeper
-    puts "You can bet it all -- or nothing if you're lame."
+    puts "You can bet it all -- or nothing if you're lame.".blue
     puts " "
-    puts "How many points would you like to wager?"
+    puts "How many points would you like to wager?".blue
     puts " "
     get_dj_answer
   end
@@ -366,14 +372,15 @@ class Game < ActiveRecord::Base
   end
 
   def validate_dj_answer(answer)
-    # 2000
-      if answer.to_i > 0 && answer.to_i <= user.score
-        user.update(bet: answer.to_i)
-        puts "Thanks for betting #{answer}. You should've bet ZERO!"
-        double_jeopardy_question_randomizer
-      else
-        puts "Sorry you can't bet #{answer}!"
-      end
+    if answer.to_i > 0 && answer.to_i <= user.score
+      user.update(bet: answer.to_i)
+      puts "Thanks for betting #{answer}. You should've bet ZERO!".red
+      puts " "
+      double_jeopardy_question_randomizer
+    else
+      puts "Sorry you can't bet #{answer}!".red
+      puts " "
+    end
   end
 
   def double_jeopardy_question_randomizer
@@ -545,9 +552,4 @@ class Game < ActiveRecord::Base
   def negative_comments
     negative = ["What have you been drinking?", "Did your grandma teach you that?", "I sure hope not!", "Obviously.", "Did you even read the documentation?", "I'll start another pot of coffee.", "It’s okay if you don’t like me. Not everyone has good taste.", "If had a dollar for every smart thing you say. I’ll be poor.", "Well at least your mom thinks you’re smart.", "Are you always so stupid or is today a special ocassion?", "Everyone has the right to be stupid, but you are abusing the privilege."]
   end
-
-  # def text_flasher(text)
-  #     puts "\e[5m#{text}\e[0m"
-  # end
-
 end
