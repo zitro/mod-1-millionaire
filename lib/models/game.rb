@@ -233,6 +233,7 @@ class Game < ActiveRecord::Base
       check_difficulty(question)
       puts "Your total score is #{user.score}".red
       puts ' '
+      sleep(3)
       check_for_dj
     else
       system("clear")
@@ -293,7 +294,7 @@ class Game < ActiveRecord::Base
   end
 
   def launch_double_jeopardy
-<<<<<<< HEAD
+    system "clear"
 		puts "
 
 
@@ -324,28 +325,13 @@ class Game < ActiveRecord::Base
 
 
 
-
-
-
-
-
 		"
 
-
-
-
-
-		puts " "
-		puts "You've made it to Double Jeopardy!"
-=======
-    system "clear"
-
     puts "You've made it to Double Jeopardy!".blue
->>>>>>> 2f7623a419486b6aafca8d410e46391d47aa6b0b
     puts " "
     puts "You currently have #{user.score} points!".blue
     puts " "
-    puts "Few make it this far... I never thought you'd be one! #{neutral_comments.sample}".blue
+    puts "Few make it this far... I never thought you'd be one!".blue
     puts " "
     sleep(1)
     puts "You can bet it all -- or nothing if you're lame.".blue
@@ -369,6 +355,8 @@ class Game < ActiveRecord::Base
     else
       puts "Sorry you can't bet #{answer}!".red
       puts " "
+      puts "Let's try again."
+      get_dj_answer
     end
   end
 
@@ -469,9 +457,6 @@ class Game < ActiveRecord::Base
 		██║     ██║   ██║██║╚██╗██║   ██║   ██║██║╚██╗██║██║   ██║██╔══╝    ▀▀══╝
 		╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║██║ ╚████║╚██████╔╝███████╗  ██╗
 		 ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝  ╚═╝
-
-
-
 
 
 
