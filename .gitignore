@@ -6,9 +6,7 @@ node_modules
 out
 tmp
 
-./db/schema.rb
-
-
+db/schema.rb
 *.iml
 *.log
 *.swp
