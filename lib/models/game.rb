@@ -32,13 +32,13 @@ class Game < ActiveRecord::Base
       puts "Our top players are:".red
       User.order(:score).reverse.first(5).each do |user|
         puts " "
-        puts " #{user.name.capitalize}: #{user.score}".blue
+        puts " #{user.name.capitalize}: #{user.score}".yellow
         puts " "
       end
       sleep(6)
       system "clear"
       puts " "
-      puts "Now for what you've all been waiting for. Here are the categories:".blue
+      puts "Now for what you've all been waiting for. Here are the categories:".yellow
       puts " "
       continue_game
     else
@@ -114,7 +114,7 @@ class Game < ActiveRecord::Base
     sleeper
     say_welcome
     host
-	  text_flasher("Please enter your name to get started")
+	  puts "Please enter your name to get started".black.bold.blink
 		say_enter_name
 	  sleeper
 	  end
@@ -135,13 +135,13 @@ class Game < ActiveRecord::Base
   def how_to_play
     system("clear")
     puts " "
-    puts "Hey #{self.user.name.capitalize}! Ready to lose? Here's how to play: ".blue
+    puts "Hey #{self.user.name.capitalize}! Ready to lose? Here's how to play: ".yellow
     sleeper
     puts " "
-    puts "You'll be given a question and four possible answers.".blue
+    puts "You'll be given a question and four possible answers.".yellow
     sleeper
     puts " "
-    puts "Only one answer is correct! Be sure to type the right key!".blue
+    puts "Only one answer is correct! Be sure to type the right key!".yellow
     sleeper
     puts " "
     sleeper
@@ -149,7 +149,7 @@ class Game < ActiveRecord::Base
 
   def count_rounds
     self.update(round_counter: (self.round_counter + 1))
-    puts "Welcome to Round #{self.round_counter}".yellow
+    puts "Welcome to Round #{self.round_counter}!".black.bold.underline
     puts " "
     sleeper
   end
@@ -162,7 +162,7 @@ class Game < ActiveRecord::Base
       puts "#{counter}. #{category.name} ".green
       puts " "
     end
-    puts "Please select a category. Press 1, 2, 3, 4, or 5".blue
+    puts "Please select a category. Press 1, 2, 3, 4, or 5".yellow
     puts " "
   end
 
@@ -199,7 +199,7 @@ class Game < ActiveRecord::Base
     counter = 0
 
     question = Question.where(category: category)[num]
-    puts question.question.blue
+    puts question.question.yellow
     puts ' '
     puts " "
     sleeper
@@ -209,7 +209,7 @@ class Game < ActiveRecord::Base
       puts " "
       answer
     end
-    puts "Type 1, 2, 3, or 4 with your answer".blue
+    puts "Type 1, 2, 3, or 4 with your answer".yellow
 
     sleeper
     get_user_answer(answers_array, question)
@@ -307,10 +307,9 @@ class Game < ActiveRecord::Base
     answer = STDIN.getch
     system "clear"
     if answer == "y"
-
       puts "Great! I'm so glad you're having fun.".red
       puts ' '
-      puts "In this session, you've played #{self.round_counter} rounds and have a total score of #{user.score}. I'm so proud of you."
+      puts "In this session, you've played #{self.round_counter} rounds and have a total score of #{user.score}. I'm so proud of you.".red
       puts " "
       continue_game
     elsif answer == "n"
@@ -342,7 +341,7 @@ class Game < ActiveRecord::Base
       ╚══════╝ ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝".red
 
       puts " "
-      puts "You got a final score of #{user.score}.".red
+      puts "You played #{self.round_counter} round(s). You got a final score of #{user.score}.".red
       puts ' '
       puts "You'll never be smarter than me.".red
       exit
