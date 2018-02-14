@@ -135,8 +135,6 @@ class Game < ActiveRecord::Base
     puts "You'll be given a question and four possible answers.".blue
     sleeper
     puts " "
-    puts "You'll have 5 seconds to pick the correct answer"
-    puts " "
     puts "Only one answer is correct! Be sure to type the right key!".blue
     sleeper
     puts " "
