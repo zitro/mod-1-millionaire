@@ -45,7 +45,7 @@ class Game < ActiveRecord::Base
 	def welcome
 	puts " "
 	puts " "
-			puts "
+	puts "
 	██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ████████╗ ██████╗
 	██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝    ╚══██╔══╝██╔═══██╗
 	██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗         ██║   ██║   ██║
@@ -54,6 +54,7 @@ class Game < ActiveRecord::Base
 	 ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝       ╚═╝    ╚═════╝
 
 	".red
+
   sleeper
 
 
@@ -98,7 +99,7 @@ class Game < ActiveRecord::Base
 	 ".green
     sleeper
 
-	  puts "Please enter your name to get started".green
+	  text_flasher("Please enter your name to get started")
 	  sleeper
 	  end
 
@@ -231,7 +232,8 @@ class Game < ActiveRecord::Base
       sleeper
       puts "........"
       sleeper
-      puts "
+
+      text_flasher("
 
 
 			 ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄▄
@@ -249,7 +251,7 @@ class Game < ActiveRecord::Base
 
 
 
-			".red
+			")
 
       puts "The correct answer was #{question.correct_answer}".red
       puts ' '
@@ -331,5 +333,8 @@ class Game < ActiveRecord::Base
     negative = ["What have you been drinking?", "Did your grandma teach you that?", "I sure hope not!", "Obviously.", "Did you even read the documentation?", "I'll start another pot of coffee.", "It’s okay if you don’t like me. Not everyone has good taste.", "If had a dollar for every smart thing you say. I’ll be poor.", "Well at least your mom thinks you’re smart.", "Are you always so stupid or is today a special ocassion?", "Everyone has the right to be stupid, but you are abusing the privilege."]
   end
 
+  def text_flasher(text)
+      puts "\e[5m#{text}\e[0m"
+  end
 
 end
