@@ -241,6 +241,7 @@ class Game < ActiveRecord::Base
     users_answer = answers_array[answer.to_i-1]
     if users_answer == correct_answer
       puts "Wow, you must be so smart. #{positive_comments.sample}".red
+			puts "You we're right! The correct answer was #{question.correct_answer}.".red
       puts ' '
       check_difficulty(question)
       puts "Your total score is #{user.score}".red
@@ -295,7 +296,8 @@ class Game < ActiveRecord::Base
   end
 
   def proceed?
-    puts "Do you want to play another round?".green
+		puts ' '
+		puts "Do you want to play another round?".green
     puts ' '
     puts "Select y/n".green
     answer = STDIN.getch
