@@ -148,6 +148,7 @@ class Game < ActiveRecord::Base
 
 
   def show_categories
+    self.update(round_counter: (game.round_counter + 1))
     # pid = fork{ exec 'killall', "afplay" }
     # pid2 = fork{ exec 'afplay', "media/Jeopardy-theme-song.mp3"}
     counter = 0
