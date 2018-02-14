@@ -11,6 +11,12 @@ class Game < ActiveRecord::Base
     start_or_score
   end
 
+  def continue_game
+    count_rounds
+    show_categories
+    randomize_questions
+  end
+
   def say_welcome
     system "say welcome to mod one millionaire"
   end
@@ -46,16 +52,6 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def continue_game
-    count_rounds
-    show_categories
-    randomize_questions
-  end
-
-  def sleeper
-    sleep(1)
-  end
-
 	def welcome
 	puts " "
 	puts " "
@@ -68,11 +64,7 @@ class Game < ActiveRecord::Base
 	 ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝       ╚═╝    ╚═════╝
 
 	".red
-
-  sleeper
-
-
-
+  sleep(1)
 			puts"
 
 	                                                            dddddddd
@@ -96,11 +88,8 @@ class Game < ActiveRecord::Base
 
 
 
-
-
-
 	".green
-  sleeper
+  sleep(1)
 
 	puts "
 	███╗   ███╗██╗██╗     ██╗     ██╗ ██████╗ ███╗   ██╗ █████╗ ██╗██████╗ ███████╗
@@ -111,17 +100,17 @@ class Game < ActiveRecord::Base
 	╚═╝     ╚═╝╚═╝╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝
 
 	 ".green
-    sleeper
+    sleep(1)
     say_welcome
     host
 	  puts "Please enter your name to get started".bold.blink
 		say_enter_name
-	  sleeper
+	  sleep(1)
 	  end
 
   def find_or_create_username
     user_name = gets.chomp.downcase
-    sleeper
+    sleep(1)
     if user_name == nil || user_name == ""
       puts "Invalid entry, please enter your name"
       find_or_create_username
@@ -129,34 +118,34 @@ class Game < ActiveRecord::Base
       user = User.find_or_create_by(name: user_name)
       self.update(user_id: user.id)
     end
-    sleeper
+    sleep(1)
   end
 
   def how_to_play
     system("clear")
     puts " "
     puts "Hey #{self.user.name.capitalize}! Ready to lose? Here's how to play: ".yellow
-    sleeper
+    sleep(1)
     puts " "
     puts "You'll be given a question and four possible answers.".yellow
-    sleeper
+    sleep(1)
     puts " "
     puts "Only one answer is correct! Be sure to type the right key!".yellow
-    sleeper
+    sleep(1)
     puts " "
-    sleeper
+    sleep(1)
   end
 
   def count_rounds
     self.update(round_counter: (self.round_counter + 1))
     puts "Welcome to Round #{self.round_counter}!".bold.underline
     puts " "
-    sleeper
+    sleep(1)
   end
 
   def show_categories
     counter = 0
-    sleeper
+    sleep(1)
     Category.first(5).each do |category|
       counter +=1
       puts "#{counter}. #{category.name} ".green
@@ -189,7 +178,7 @@ class Game < ActiveRecord::Base
       puts "Invalid entry. Please enter your choice again".red
       get_category
     end
-    sleeper
+    sleep(1)
     puts " "
   end
 
@@ -202,7 +191,7 @@ class Game < ActiveRecord::Base
     puts question.question.yellow
     puts ' '
     puts " "
-    sleeper
+    sleep(1)
     answers_array = display_answers(question).map do |answer|
       counter +=1
       puts "#{counter}. #{answer}".green
@@ -210,7 +199,7 @@ class Game < ActiveRecord::Base
       answer
     end
     puts "Type 1, 2, 3, or 4 with your answer".yellow
-    sleeper
+    sleep(1)
     get_user_answer(answers_array, question)
   end
 
@@ -249,11 +238,11 @@ class Game < ActiveRecord::Base
       system("clear")
       pid2 = fork{ exec 'afplay', "media/fail.mp3"}
       puts "#{negative_comments.sample} Sorry dumbass.... but you're.....".red
-      sleeper
+      sleep(1)
       puts "...."
-      sleeper
+      sleep(1)
       puts "........"
-      sleeper
+      sleep(1)
       puts "
 
 
@@ -350,7 +339,7 @@ class Game < ActiveRecord::Base
 		puts "You've made it to Double Jeopardy!"
 =======
     system "clear"
-    
+
     puts "You've made it to Double Jeopardy!".blue
 >>>>>>> 2f7623a419486b6aafca8d410e46391d47aa6b0b
     puts " "
@@ -358,7 +347,7 @@ class Game < ActiveRecord::Base
     puts " "
     puts "Few make it this far... I never thought you'd be one! #{neutral_comments.sample}".blue
     puts " "
-    sleeper
+    sleep(1)
     puts "You can bet it all -- or nothing if you're lame.".blue
     puts " "
     puts "How many points would you like to wager?".blue
@@ -391,7 +380,7 @@ class Game < ActiveRecord::Base
       puts question.question.yellow
       puts ' '
       puts " "
-      sleeper
+      sleep(1)
       answers_array = display_answers(question).map do |answer|
         counter +=1
         puts "#{counter}. #{answer}".green
@@ -399,7 +388,7 @@ class Game < ActiveRecord::Base
         answer
       end
       puts "Type 1, 2, 3, or 4 with your answer".yellow
-      sleeper
+      sleep(1)
       dj_get_user_answer(answers_array, question)
   end
 
@@ -434,11 +423,11 @@ class Game < ActiveRecord::Base
       pid2 = fork{ exec 'afplay', "media/fail.mp3"}
       user.update(score: (user.score - user.bet))
       puts "#{negative_comments.sample} Sorry dumbass.... but you're.....".red
-      sleeper
+      sleep(1)
       puts "...."
-      sleeper
+      sleep(1)
       puts "........"
-      sleeper
+      sleep(1)
       puts "
 
 
