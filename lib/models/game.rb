@@ -238,12 +238,13 @@ class Game < ActiveRecord::Base
     else
       system("clear")
       pid2 = fork{ exec 'afplay', "media/fail.mp3"}
+			puts " "
       puts "#{negative_comments.sample} Sorry dumbass.... but you're.....".red
       sleep(1)
       puts "...."
       sleep(1)
       puts "........"
-      sleep(1)
+      sleep(2)
       puts "
 
 
@@ -263,12 +264,12 @@ class Game < ActiveRecord::Base
 
 
 			".blink
-
+			sleep(2)
       puts "The correct answer was #{question.correct_answer}".red
       puts ' '
       puts "Your total score is #{user.score}".red
       puts ' '
-			sleep(3)
+			sleep(5)
       check_for_dj
     end
   end
@@ -327,16 +328,16 @@ class Game < ActiveRecord::Base
 
 		"
 
-    puts "You've made it to Double Jeopardy!".blue
+    puts "You've made it to Double Jeopardy!".yellow
     puts " "
-    puts "You currently have #{user.score} points!".blue
+    puts "You currently have #{user.score} points!".yellow
     puts " "
-    puts "Few make it this far... I never thought you'd be one!".blue
+    puts "Few make it this far... I never thought you'd be one!".yellow
     puts " "
     sleep(1)
-    puts "You can bet it all -- or nothing if you're lame.".blue
+    puts "You can bet it all -- or nothing if you're lame.".yellow
     puts " "
-    puts "How many points would you like to wager?".blue
+    puts "How many points would you like to wager?".yellow
     puts " "
     get_dj_answer
   end
@@ -351,6 +352,7 @@ class Game < ActiveRecord::Base
       user.update(bet: answer.to_i)
       puts "Thanks for betting #{answer}. You should've bet ZERO!".red
       puts " "
+			system "clear"
       double_jeopardy_question_randomizer
     else
       puts "Sorry you can't bet #{answer}!".red
@@ -415,7 +417,7 @@ class Game < ActiveRecord::Base
       puts "...."
       sleep(1)
       puts "........"
-      sleep(1)
+      sleep(2)
       puts "
 
 
@@ -435,12 +437,13 @@ class Game < ActiveRecord::Base
 
 
 			".blink
-
+			sleep(3)
       puts "The correct answer was #{question.correct_answer}".red
       puts ' '
       puts "Your total score is #{user.score}".red
       puts ' '
-			sleep(3)
+			sleep(5)
+			system "clear"
       continue_game
     end
   end
@@ -469,7 +472,8 @@ class Game < ActiveRecord::Base
     answer = STDIN.getch
     system "clear"
     if answer == "y"
-      puts "Great! I'm so glad you're having fun.".red
+			puts ' '
+			puts "Great! I'm so glad you're having fun.".red
       puts ' '
       puts "In this session, you've played #{self.round_counter} rounds and have a total score of #{user.score}. I'm so proud of you.".red
       puts " "
@@ -524,6 +528,6 @@ class Game < ActiveRecord::Base
   end
 
   def negative_comments
-    negative = ["What have you been drinking?", "Did your grandma teach you that?", "I sure hope not!", "Obviously.", "Did you even read the documentation?", "I'll start another pot of coffee.", "It’s okay if you don’t like me. Not everyone has good taste.", "If had a dollar for every smart thing you say. I’ll be poor.", "Well at least your mom thinks you’re smart.", "Are you always so stupid or is today a special ocassion?", "Everyone has the right to be stupid, but you are abusing the privilege."]
+    negative = ["What have you been drinking?", "Did your grandma teach you that?", "I sure hope not!", "Obviously.", "Did you even read the documentation?", "I'll start another pot of coffee.", "It’s okay if you don’t like me. Not everyone has good taste.", "If had a dollar for every smart thing you say. I’d be poor. ", "Well at least your mom thinks you’re smart.", "Are you always so stupid or is today a special ocassion?", "Everyone has the right to be stupid, but you are abusing the privilege."]
   end
 end

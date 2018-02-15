@@ -37,6 +37,7 @@ class Category < ActiveRecord::Base
       "&hellip;" => "...",
       "&amp;" => "&",
       "&iacute;" => "i",
+			"&eacute;" => "e",
       "&oacute;" => "o",
       "&aacute;" => "a",
       "&deg;" => " degree(s)",
