@@ -407,7 +407,8 @@ class Game < ActiveRecord::Base
       puts ' '
       puts "Your total score is #{user.score}".red
       puts ' '
-      continue_game
+      sleep(4)
+      proceed?
     else
       system("clear")
       pid2 = fork{ exec 'afplay', "media/fail.mp3"}
@@ -444,7 +445,7 @@ class Game < ActiveRecord::Base
       puts ' '
 			sleep(5)
 			system "clear"
-      continue_game
+      proceed?
     end
   end
 
