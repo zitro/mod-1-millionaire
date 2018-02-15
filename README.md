@@ -35,7 +35,10 @@ Step 2. Clone repository to your computer
 Step 3. ::run (bundle install) from the terminal
 
 ```
-Step 4. ::run (ruby bin/run.rb) from the terminal to start application
+Step 4. ::run (rake db:migrate) from the terminal to create your local database
+
+```
+Step 5. ::run (ruby bin/run.rb) from the terminal to start application and prepare to lose.
 
 ```
 
