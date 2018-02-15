@@ -8,11 +8,11 @@ class Game < ActiveRecord::Base
     welcome
     find_or_create_username
     how_to_play
+    count_rounds
     start_or_score
   end
 
   def continue_game
-    count_rounds
     show_categories
     randomize_questions
   end
@@ -138,12 +138,12 @@ class Game < ActiveRecord::Base
 
   def count_rounds
     self.update(round_counter: (self.round_counter + 1))
-    puts "Welcome to Round #{self.round_counter}!".bold.underline
-    puts " "
-    sleep(1)
   end
 
   def show_categories
+    puts "Welcome to Round #{self.round_counter}!".bold.underline
+    puts " "
+    sleep(1)
     counter = 0
     sleep(1)
     Category.first(5).each do |category|
@@ -186,7 +186,7 @@ class Game < ActiveRecord::Base
     category = get_category
     num = rand(1..30)
     counter = 0
-
+    user.update(bet: 0)
     question = Question.where(category: category)[num]
     puts question.question.yellow
     puts ' '
@@ -224,9 +224,11 @@ class Game < ActiveRecord::Base
   end
 
   def correct?(answer, answers_array, question)
+    count_rounds
     correct_answer = question.correct_answer
     users_answer = answers_array[answer.to_i-1]
     if users_answer == correct_answer
+      user.update(score: (user.score + user.bet))
       puts "Wow, you must be so smart. #{positive_comments.sample}".red
 			puts "You we're right! The correct answer was #{question.correct_answer}.".red
       puts ' '
@@ -238,6 +240,9 @@ class Game < ActiveRecord::Base
     else
       system("clear")
       pid2 = fork{ exec 'afplay', "media/fail.mp3"}
+      user.update(score: (user.score - user.bet))
+      puts " "
+      puts "You picked #{users_answer}???!!!!"
 			puts " "
       puts "#{negative_comments.sample} Sorry dumbass.... but you're.....".red
       sleep(1)
@@ -379,74 +384,7 @@ class Game < ActiveRecord::Base
       end
       puts "Type 1, 2, 3, or 4 with your answer".yellow
       sleep(1)
-      dj_get_user_answer(answers_array, question)
-  end
-
-  def dj_get_user_answer(answers_array, question)
-    answer = STDIN.getch
-    dj_valid_user_answer(answer, answers_array, question)
-    answer
-  end
-
-  def dj_valid_user_answer(answer, answers_array, question)
-    if answer == "1" || answer == "2" || answer == "3" || answer == "4"
-      dj_correct?(answer, answers_array, question)
-    else
-      puts "Invalid entry. Please enter your choice again"
       get_user_answer(answers_array, question)
-    end
-  end
-
-  def dj_correct?(answer, answers_array, question)
-    correct_answer = question.correct_answer
-    users_answer = answers_array[answer.to_i-1]
-    if users_answer == correct_answer
-      user.update(score: (user.score + user.bet))
-      puts "Wow, you must be so smart. #{positive_comments.sample}".red
-			puts "You we're right! The correct answer was #{question.correct_answer}.".red
-      puts ' '
-      puts "Your total score is #{user.score}".red
-      puts ' '
-      sleep(4)
-      proceed?
-    else
-      system("clear")
-      pid2 = fork{ exec 'afplay', "media/fail.mp3"}
-      user.update(score: (user.score - user.bet))
-      puts "#{negative_comments.sample} Sorry dumbass.... but you're.....".red
-      sleep(1)
-      puts "...."
-      sleep(1)
-      puts "........"
-      sleep(2)
-      puts "
-
-
-			 ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄  ▄▄▄▄▄▄▄▄▄▄▄
-			▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░░▌      ▐░▌▐░░░░░░░░░░░▌
-			▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌░▌     ▐░▌▐░█▀▀▀▀▀▀▀▀▀
-			▐░▌       ▐░▌▐░▌       ▐░▌▐░▌       ▐░▌▐░▌▐░▌    ▐░▌▐░▌
-			▐░▌   ▄   ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌       ▐░▌▐░▌ ▐░▌   ▐░▌▐░▌ ▄▄▄▄▄▄▄▄
-			▐░▌  ▐░▌  ▐░▌▐░░░░░░░░░░░▌▐░▌       ▐░▌▐░▌  ▐░▌  ▐░▌▐░▌▐░░░░░░░░▌
-			▐░▌ ▐░▌░▌ ▐░▌▐░█▀▀▀▀█░█▀▀ ▐░▌       ▐░▌▐░▌   ▐░▌ ▐░▌▐░▌ ▀▀▀▀▀▀█░▌
-			▐░▌▐░▌ ▐░▌▐░▌▐░▌     ▐░▌  ▐░▌       ▐░▌▐░▌    ▐░▌▐░▌▐░▌       ▐░▌
-			▐░▌░▌   ▐░▐░▌▐░▌      ▐░▌ ▐░█▄▄▄▄▄▄▄█░▌▐░▌     ▐░▐░▌▐░█▄▄▄▄▄▄▄█░▌
-			▐░░▌     ▐░░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌      ▐░░▌▐░░░░░░░░░░░▌
-			 ▀▀       ▀▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀        ▀▀  ▀▀▀▀▀▀▀▀▀▀▀
-
-
-
-
-			".blink
-			sleep(3)
-      puts "The correct answer was #{question.correct_answer}".red
-      puts ' '
-      puts "Your total score is #{user.score}".red
-      puts ' '
-			sleep(5)
-			system "clear"
-      proceed?
-    end
   end
 
   def proceed?
@@ -518,7 +456,6 @@ class Game < ActiveRecord::Base
       proceed?
     end
   end
-
 
   def positive_comments
     positive = ["NERD!!!!", "I'm so impressed... yawn", "How the hell did you know that???", "Harvard grad, huh?", "THAT was impressive.", "Obviously.", "You can JOIN my TABLE anyday.", "You're really ARRAY of light.", "Another successful merge!", "Life’s good, you should get one.", "Unless your name is Google stop acting like you know everything."]
