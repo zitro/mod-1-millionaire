@@ -36,6 +36,7 @@ class Game < ActiveRecord::Base
     if answer == "1"
       puts " "
       puts "Our top players are:".red
+
       User.order(:score).reverse.first(5).each do |user|
         puts " "
         puts " #{user.name.capitalize}: #{user.score}".yellow

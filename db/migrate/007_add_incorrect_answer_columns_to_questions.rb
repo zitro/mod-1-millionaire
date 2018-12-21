@@ -1,4 +1,4 @@
-class AddIncorrectAnswerColumnsToQuestions < ActiveRecord::Migration
+class AddIncorrectAnswerColumnsToQuestions < ActiveRecord::Migration[4.2]
   def change
     add_column :questions, :incorrect_answer1, :string
     add_column :questions, :incorrect_answer2, :string
